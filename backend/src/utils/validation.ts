@@ -255,3 +255,70 @@ export function isValidDisplayName(name: string): boolean {
   const nameRegex = /^[a-zA-Z0-9\s\-']{2,100}$/;
   return nameRegex.test(trimmed);
 }
+
+/**
+ * Validates pet data for creation/update
+ * @param data - Pet data to validate
+ * @returns Object with valid boolean and errors array
+ */
+export function validatePet(data: {
+  name?: string;
+  species?: string;
+  breed?: string;
+  birthDate?: string;
+  weight?: number;
+  colorDescription?: string;
+  microchipId?: string;
+  notes?: string;
+}): { valid: boolean; errors: string[] } {
+  const errors: string[] = [];
+
+  // Validate name (required)
+  if (!data.name) {
+    errors.push('Name is required');
+  } else if (!isValidPetName(data.name)) {
+    errors.push('Name must be 1-100 characters and contain only letters, numbers, spaces, hyphens, and apostrophes');
+  }
+
+  // Validate species (required)
+  if (!data.species) {
+    errors.push('Species is required');
+  } else if (!isValidSpecies(data.species)) {
+    errors.push('Invalid species. Must be one of: dog, cat, bird, rabbit, hamster, guinea pig, fish, reptile, other');
+  }
+
+  // Validate breed (optional)
+  if (data.breed && !isValidBreed(data.breed)) {
+    errors.push('Breed must be 1-100 characters and contain only letters, numbers, spaces, hyphens, apostrophes, and slashes');
+  }
+
+  // Validate birthDate (optional)
+  if (data.birthDate && !isValidBirthDate(data.birthDate)) {
+    errors.push('Birth date must be a valid date, not in the future, and within the last 50 years');
+  }
+
+  // Validate weight (optional)
+  if (data.weight !== undefined && !isValidWeight(data.weight)) {
+    errors.push('Weight must be between 0.1 and 300 kg');
+  }
+
+  // Validate color description (optional)
+  if (data.colorDescription && !isValidColorDescription(data.colorDescription)) {
+    errors.push('Color description must be 1-200 characters');
+  }
+
+  // Validate microchip ID (optional)
+  if (data.microchipId && !isValidMicrochipId(data.microchipId)) {
+    errors.push('Microchip ID must be 8-20 alphanumeric characters');
+  }
+
+  // Validate notes (optional)
+  if (data.notes && !isValidNotes(data.notes)) {
+    errors.push('Notes must be 1-1000 characters');
+  }
+
+  return {
+    valid: errors.length === 0,
+    errors
+  };
+}

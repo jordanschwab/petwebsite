@@ -9,6 +9,7 @@ import cookieParser from 'cookie-parser';
 import { authenticateToken } from './middleware/auth.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import authRoutes from './routes/auth.js';
+import petRoutes from './routes/pets.js';
 
 // Load environment variables (.env.local takes precedence if present)
 const envLocalPath = path.resolve(process.cwd(), '.env.local');
@@ -50,6 +51,10 @@ app.get('/api', (_req, res) => {
 
 // Auth routes
 app.use('/api/auth', authRoutes);
+
+// Pet routes
+app.use('/api/pets', petRoutes);
+
 // 404 handler - must be before error handler
 app.use(notFoundHandler);
 
