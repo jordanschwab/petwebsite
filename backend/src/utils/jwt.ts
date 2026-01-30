@@ -22,8 +22,13 @@ export interface TokenPayload {
  * @param userId - The user ID to encode in the token
  * @param email - Optional email to include in token
  * @returns Signed JWT token string
+ * @throws Error if userId is empty
  */
 export function signToken(userId: string, email?: string): string {
+  if (!userId || typeof userId !== 'string' || userId.trim() === '') {
+    throw new Error('userId cannot be empty');
+  }
+
   try {
     const payload: TokenPayload = {
       userId,

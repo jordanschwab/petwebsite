@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
-import * as jwtUtils from '../utils/jwt';
+import { describe, it, expect } from '@jest/globals';
+import * as jwtUtils from '../src/utils/jwt';
 import jwt from 'jsonwebtoken';
 
 describe('JWT Utilities', () => {
@@ -199,7 +199,7 @@ describe('JWT Utilities', () => {
       expect(payload.email).toBe(testEmail);
     });
 
-    it('should handle token refresh cycle', () => {
+    it('should handle token refresh cycle', async () => {
       // 1. Create initial tokens
       const accessToken1 = jwtUtils.signToken(testUserId);
       const refreshToken = jwtUtils.signRefreshToken(testUserId);
@@ -208,9 +208,12 @@ describe('JWT Utilities', () => {
       const payload1 = jwtUtils.verifyToken(accessToken1);
       expect(payload1.userId).toBe(testUserId);
 
-      // 3. Refresh to get new access token
+      // 3. Wait to ensure new iat timestamp for different token
+      await new Promise(resolve => setTimeout(resolve, 1100));
+      
       const { accessToken: accessToken2 } = jwtUtils.refreshAccessToken(refreshToken);
       expect(accessToken2).toBeTruthy();
+      // Tokens will be different because they're created at different times (different iat)
       expect(accessToken2).not.toBe(accessToken1);
 
       // 4. Verify new access token

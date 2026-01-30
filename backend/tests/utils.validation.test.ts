@@ -1,12 +1,12 @@
 import { describe, it, expect } from '@jest/globals';
-import * as validation from '../utils/validation';
+import * as validation from '../src/utils/validation';
 
 describe('Validation Utilities', () => {
   describe('isValidEmail', () => {
     it('should accept valid emails', () => {
       expect(validation.isValidEmail('test@example.com')).toBe(true);
       expect(validation.isValidEmail('user.name@example.co.uk')).toBe(true);
-      expect(validation.isValidEmail('first+last@example.com')).toBe(false); // + not in regex
+      expect(validation.isValidEmail('first+last@example.com')).toBe(true); // + is allowed
     });
 
     it('should reject invalid emails', () => {
@@ -33,7 +33,7 @@ describe('Validation Utilities', () => {
     });
 
     it('should reject emails that are too short or too long', () => {
-      expect(validation.isValidEmail('a@b')).toBe(true); // minimum valid
+      expect(validation.isValidEmail('a@b.co')).toBe(true); // minimum valid
       expect(validation.isValidEmail('a'.repeat(250) + '@example.com')).toBe(false); // too long
     });
   });

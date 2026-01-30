@@ -4,9 +4,9 @@ const logger = createLogger('Validation');
 
 /**
  * Email regex pattern for validation
- * RFC 5322 simplified pattern
+ * RFC 5322 simplified pattern - allows alphanumeric, dots, plus, and hyphens
  */
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const EMAIL_REGEX = /^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 /**
  * Pet name regex - allows letters, numbers, spaces, hyphens, apostrophes
@@ -69,16 +69,16 @@ export function isValidPetName(name: string): boolean {
 }
 
 /**
- * Validates a UUID v4 format
+ * Validates a UUID format (v1-v5)
  * @param uuid - UUID string to validate
- * @returns true if valid UUID v4, false otherwise
+ * @returns true if valid UUID, false otherwise
  */
 export function isValidUUID(uuid: string): boolean {
   if (!uuid || typeof uuid !== 'string') {
     return false;
   }
 
-  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   return uuidRegex.test(uuid);
 }
 
