@@ -38,6 +38,9 @@ yarn-error.log*
 tmp/
 temp/
 
+# SSL Certificates
+frontend/.cert/
+
 # OS specific
 Thumbs.db
 .DS_Store
