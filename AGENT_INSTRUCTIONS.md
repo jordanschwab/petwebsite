@@ -49,6 +49,27 @@ docs(plan): update implementation progress
 
 ---
 
+### Agent Auto-Commit Policy
+
+All automated agents (including developer assistants) MUST commit changes they make to the repository automatically after completing a task that modifies files. Follow this policy:
+
+1. Run the verification steps before committing: `npm run type-check`, `npm run lint`, and `npm run test` in the affected package (usually `backend/` or `frontend/`). Fix or surface any failures before committing.
+2. Stage only the files modified by the task. Do not stage unrelated files.
+3. Use a conventional commit message describing the change, with the `agent` scope when the change was produced by an automated agent, for example:
+
+```
+test(agent): add Prisma refreshToken mocks and adjust import order
+docs(agent): require automatic commits by agents
+fix(agent): correct Prisma schema relation for RefreshToken
+```
+
+4. If tests or type-checking fail, create a descriptive commit with `chore(agent): WIP - failing checks` only if the work cannot be completed fully in one action and assign the task to a human for follow-up.
+5. Push to the branch only when explicitly authorized by a human operator; do not push commits automatically unless instructed.
+
+This policy ensures traceability of automated changes while preventing incomplete or broken commits from being pushed without human oversight.
+
+---
+
 ## Code Organization
 
 ### Backend Structure
