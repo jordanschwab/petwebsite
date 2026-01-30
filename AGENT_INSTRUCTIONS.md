@@ -144,6 +144,38 @@ if (user.id !== requestUserId) {
 
 ## Testing Conventions
 
+### Refresh Token Persistence & Cookie Security
+
+- **Persist refresh tokens server-side**: store refresh tokens in a `refresh_tokens` table (Prisma model `RefreshToken`) and mark tokens as revoked when rotated.
+- **Rotation**: on successful refresh, revoke the old token and create a new refresh token; do not reuse tokens.
+- **Cookie settings (recommended)**:
+  - `httpOnly: true` (always)
+  - `secure: true` in production (HTTPS only)
+  - `sameSite: 'none'` in production when cross-site cookies are required; use `lax` for local development
+  - `domain` can be set via `COOKIE_DOMAIN` env var when needed
+  - `maxAge`: keep refresh tokens short-lived (e.g. 7 days)
+- **Server-side validation**: always verify persisted refresh token exists, is not revoked, and has not expired before issuing a new access token.
+
+Local commands to apply changes after pulling these updates:
+
+```bash
+cd backend
+# Run Prisma migrations to add the RefreshToken model
+npx prisma migrate dev --name add_refresh_tokens
+# Regenerate Prisma client
+npx prisma generate
+# Install cookie parser and types if missing
+npm install cookie-parser
+npm install -D @types/cookie-parser
+# Run tests
+npm run test
+```
+
+Add unit and integration tests covering:
+- `handleGoogleLogin` (creates user, persists refresh token)
+- `refreshAuthToken` (validates persisted token, revokes old token, issues rotated token)
+
+
 ### Test File Organization
 
 Each `test.ts` file should have this structure:
