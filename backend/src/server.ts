@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import { createLogger } from './utils/logger.js';
 import { authenticateToken } from './middleware/auth.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
+import authRoutes from './routes/auth.js';
 
 // Load environment variables
 dotenv.config();
@@ -37,6 +38,8 @@ app.get('/api', (_req, res) => {
   res.json({ message: 'Pet Management API v0.1.0' });
 });
 
+// Auth routes
+app.use('/api/auth', authRoutes);
 // 404 handler - must be before error handler
 app.use(notFoundHandler);
 
