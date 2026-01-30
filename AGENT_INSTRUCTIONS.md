@@ -70,6 +70,22 @@ This policy ensures traceability of automated changes while preventing incomplet
 
 ---
 
+### Plan Sync Policy
+
+Agents MUST keep the project's implementation plan in sync when they complete work that changes project status. Follow these rules:
+
+1. After completing any multi-file or multi-step task, update `IMPLEMENTATION_PLAN.md` with a concise status entry including:
+  - What was completed (one-line)
+  - Date of completion
+  - Any follow-up manual steps required (one line)
+2. Run `npm run type-check`, `npm run lint`, and `npm run test` in the affected package before committing the plan update.
+3. Commit the plan update using the `agent` scope in the conventional commit message, e.g. `docs(agent): update implementation plan status`.
+4. Do not push the commit automatically unless explicitly authorized by a human operator.
+
+These steps ensure the plan accurately reflects the repository state and reduces coordination overhead.
+
+---
+
 ## Code Organization
 
 ### Backend Structure

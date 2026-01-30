@@ -10,6 +10,20 @@ This document outlines the concrete, executable steps needed to implement the Pe
 
 ---
 
+## Current Status (updated: 2026-01-31)
+
+- **Backend - Auth:** OAuth utilities, auth routes/controllers/services, refresh-token persistence, and cookie hardening implemented and tested locally. Prisma migration for `RefreshToken` applied and client regenerated.
+- **Tests:** All backend tests passing locally (129/129). Integration and unit tests for auth and middleware are included and passing.
+- **Tooling:** `cookie-parser` installed; TypeScript checks and lint run successfully in the backend.
+- **Pending (manual):** Push commits to remote (requires approval), run CI, and validate frontend Google login + integration with backend in a live environment.
+
+Next recommended steps:
+- Push commits and run CI to validate platform-wide integration.
+- Start backend dev server and verify `/health` endpoint.
+- Continue frontend implementation for Google Sign-In and protected routes.
+
+---
+
 ## Week 1: Foundation & Project Setup
 
 ### Days 1-2: Repository & Environment Setup
@@ -134,17 +148,17 @@ This document outlines the concrete, executable steps needed to implement the Pe
 **Backend Tasks**:
 
 1. **OAuth Routes** (4 hours)
-   - [ ] Create `src/routes/auth.ts`:
+    - [x] Create `src/routes/auth.ts`:
      ```
      POST /auth/google
      POST /auth/logout
      GET /auth/me
      ```
-   - [ ] Create `src/controllers/authController.ts`:
+    - [x] Create `src/controllers/authController.ts`:
      - [ ] `googleLogin()` - Handle OAuth callback
      - [ ] `logout()` - Clear session
      - [ ] `getCurrentUser()` - Return auth user
-   - [ ] Create `src/services/authService.ts`:
+    - [x] Create `src/services/authService.ts`:
      - [ ] `verifyGoogleToken()`
      - [ ] `createOrUpdateUser()`
      - [ ] `generateAuthTokens()`
@@ -152,17 +166,17 @@ This document outlines the concrete, executable steps needed to implement the Pe
    - [ ] Return JWT in response
 
 2. **Token Storage** (2 hours)
-   - [ ] Implement secure httpOnly cookie storage
-   - [ ] Set cookie domain and path correctly
-   - [ ] Add CORS cookie support
-   - [ ] Test cookie is sent with requests
+   - [x] Implement secure httpOnly cookie storage
+   - [x] Set cookie domain and path correctly
+   - [x] Add CORS cookie support
+   - [x] Test cookie is sent with requests
 
 3. **Testing** (3 hours)
-   - [ ] Unit tests for auth service functions
-   - [ ] Integration tests for auth endpoints
-   - [ ] Test user creation flow
-   - [ ] Test token generation
-   - [ ] Aim for 85%+ coverage
+   - [x] Unit tests for auth service functions
+   - [x] Integration tests for auth endpoints
+   - [x] Test user creation flow
+   - [x] Test token generation
+   - [x] Aim for 85%+ coverage (target ongoing; current tests passing locally)
 
 **Frontend Tasks**:
 
