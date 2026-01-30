@@ -71,3 +71,22 @@ export async function handleGoogleLogin(idToken: string): Promise<AuthResult> {
 export async function getUserById(userId: string) {
   return prisma.user.findUnique({ where: { id: userId } as any });
 }
+
+/**
+ * Refresh access token using refresh token
+ * Returns new access token and rotated refresh token
+ */
+export async function refreshAuthToken(refreshToken: string): Promise<AuthResult> {
+  // Verify and get payload from refresh token
+  const { accessToken: newAccessToken, payload } = await (await import('../utils/jwt.js')).refreshAccessToken(refreshToken);
+
+  const user = await getUserById(payload.userId);
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  // Optionally rotate refresh token
+  const newRefreshToken = signRefreshToken(user.id);
+
+  return { user, accessToken: newAccessToken, refreshToken: newRefreshToken };
+}

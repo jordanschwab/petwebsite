@@ -63,4 +63,16 @@ describe('Auth Integration', () => {
     const res = await request(app).post('/api/auth/logout').expect(200);
     expect(res.body.message).toMatch(/Logged out/i);
   });
+
+  it('POST /api/auth/refresh should refresh tokens when cookie present', async () => {
+    const agent = request.agent(app);
+
+    // Login to set cookie
+    const login = await agent.post('/api/auth/google').send({ idToken: 'fake-id-token' }).expect(200);
+    // Now call refresh using the agent (cookies preserved)
+    const res = await agent.post('/api/auth/refresh').expect(200);
+    expect(res.body).toHaveProperty('data');
+    expect(res.body.data).toHaveProperty('accessToken');
+    expect(res.body.message).toMatch(/Token refreshed/i);
+  });
 });

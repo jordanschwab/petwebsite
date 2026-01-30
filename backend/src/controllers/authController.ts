@@ -56,3 +56,32 @@ export async function getCurrentUser(req: Request, res: Response) {
     return res.status(500).json({ error: 'Failed to fetch user' });
   }
 }
+
+export async function refreshToken(req: Request, res: Response) {
+  try {
+    // Read refresh token from cookie or body
+    const cookieToken = (req as any).cookies?.refreshToken as string | undefined;
+    const bodyToken = (req.body && (req.body.refreshToken as string | undefined)) || undefined;
+    const token = cookieToken || bodyToken;
+
+    if (!token) {
+      return res.status(400).json({ error: 'Refresh token required', code: 'INVALID_REQUEST' });
+    }
+
+    const { refreshAuthToken } = await import('../services/authService.js');
+    const { user, accessToken, refreshToken } = await refreshAuthToken(token);
+
+    // Set new refresh token cookie
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    return res.json({ data: { user, accessToken }, message: 'Token refreshed' });
+  } catch (error) {
+    logger.error('Error in refreshToken', { error });
+    return res.status(401).json({ error: 'Invalid refresh token', code: 'INVALID_REFRESH' });
+  }
+}
