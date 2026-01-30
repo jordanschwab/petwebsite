@@ -2,13 +2,19 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
 import { createLogger } from './utils/logger.js';
 import cookieParser from 'cookie-parser';
 import { authenticateToken } from './middleware/auth.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import authRoutes from './routes/auth.js';
 
-// Load environment variables
+// Load environment variables (.env.local takes precedence if present)
+const envLocalPath = path.resolve(process.cwd(), '.env.local');
+if (fs.existsSync(envLocalPath)) {
+  dotenv.config({ path: envLocalPath });
+}
 dotenv.config();
 
 const logger = createLogger('Server');

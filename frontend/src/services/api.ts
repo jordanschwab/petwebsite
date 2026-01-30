@@ -7,12 +7,26 @@ const apiClient = axios.create({
   withCredentials: true,
 });
 
+// Request interceptor: attach access token from localStorage
+apiClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem('accessToken');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 let isRefreshing = false;
 let refreshPromise: Promise<any> | null = null;
 
 async function refreshToken() {
   if (!refreshPromise) {
-    refreshPromise = apiClient.post('/api/auth/refresh').then((r) => r.data).finally(() => {
+    refreshPromise = apiClient.post('/api/auth/refresh').then((r) => {
+      if (r.data?.data?.accessToken) {
+        localStorage.setItem('accessToken', r.data.data.accessToken);
+      }
+      return r.data;
+    }).finally(() => {
       refreshPromise = null;
     });
   }
@@ -30,7 +44,8 @@ apiClient.interceptors.response.use(
         await refreshToken();
         return apiClient(originalRequest);
       } catch (refreshErr) {
-        // if refresh fails, redirect to login
+        // if refresh fails, clear token and redirect to login
+        localStorage.removeItem('accessToken');
         window.location.href = '/';
       }
     }

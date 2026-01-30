@@ -23,6 +23,11 @@ export function getOAuthClient(): OAuth2Client {
     throw new Error('Google OAuth client credentials not configured');
   }
 
+  const redactedClientId = GOOGLE_CLIENT_ID
+    ? `${GOOGLE_CLIENT_ID.slice(0, 6)}...${GOOGLE_CLIENT_ID.slice(-6)}`
+    : '(missing)';
+  logger.info('Google OAuth client ID loaded', { clientId: redactedClientId });
+
   if (!oauthClient) {
     oauthClient = new OAuth2Client(
       GOOGLE_CLIENT_ID,

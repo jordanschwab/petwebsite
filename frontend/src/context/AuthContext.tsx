@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useCallback } from 'react';
+import apiClient from '@/services/api';
 
 type User = { id: string; email: string; displayName?: string } | null;
 
@@ -16,13 +17,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const setUserFromBackend = useCallback(async () => {
     try {
-      const res = await fetch('/api/auth/me', { credentials: 'include' });
-      if (res.ok) {
-        const json = await res.json();
-        setUser(json.data ?? null);
-      } else {
-        setUser(null);
-      }
+      const res = await apiClient.get('/api/auth/me');
+      setUser(res.data?.data?.user ?? null);
     } catch (err) {
       setUser(null);
     }
@@ -30,6 +26,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signOut = useCallback(async () => {
     await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+    localStorage.removeItem('accessToken');
     setUser(null);
   }, []);
 
