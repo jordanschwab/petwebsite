@@ -27,6 +27,7 @@ model User {
   petPhotos         PetPhoto[]
   healthRecords     PetHealthRecord[]
   auditLogs         AuditLog[]
+  refreshTokens     RefreshToken[]
 
   @@index([email])
   @@index([googleId])
