@@ -63,9 +63,9 @@ This document outlines the concrete, executable steps needed to implement the Pe
 | **Frontend: Google Login UI** | LoginButton component, Google OAuth library | ✅ Complete | [`63bd112`](https://github.com/jordaniza/claudewebsite/commit/63bd112) | `@react-oauth/google` installed |
 | **Frontend: Auth Context** | AuthProvider, useAuth hook, user state | ✅ Complete | [`63bd112`](https://github.com/jordaniza/claudewebsite/commit/63bd112) | Context wired in App.tsx |
 | **Frontend: Protected Routes** | ProtectedRoute component, auth guards | ✅ Complete | [`63bd112`](https://github.com/jordaniza/claudewebsite/commit/63bd112) | Dashboard protected by auth check |
-| **Frontend: Pages & UI** | Landing, Dashboard, basic styling | ✅ Complete | [`f6a8452`](https://github.com/jordaniza/claudewebsite/commit/f6a8452) | Dashboard with user display + Sign out button |
-| **Frontend: Token Refresh** | Axios client with 401 retry, auto-refresh | ✅ Complete | [`f6a8452`](https://github.com/jordaniza/claudewebsite/commit/f6a8452) | `src/services/api.ts` with refresh logic |
-| **Frontend: Type-Check & Tests** | TypeScript strict mode, frontend tests | ✅ Complete | [`f6a8452`](https://github.com/jordaniza/claudewebsite/commit/f6a8452) | 0 errors, tests passing |
+| **Frontend: Pages & UI** | Landing, Dashboard, basic styling | ✅ Complete | [`f2ace97`](https://github.com/jordaniza/claudewebsite/commit/f2ace97) | Dashboard with user display + Sign out button |
+| **Frontend: Token Refresh** | Axios client with 401 retry, auto-refresh | ✅ Complete | [`f2ace97`](https://github.com/jordaniza/claudewebsite/commit/f2ace97) | `src/services/api.ts` with refresh logic |
+| **Frontend: Type-Check & Tests** | TypeScript strict mode, frontend tests | ✅ Complete | [`f2ace97`](https://github.com/jordaniza/claudewebsite/commit/f2ace97) | 0 errors, tests passing |
 
 **Week 2 Deliverables**:
 - ✅ Backend: Auth endpoints working, refresh flow implemented, tokens persisted server-side
