@@ -1,4 +1,3 @@
-import React from 'react';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -16,7 +15,6 @@ export default function LoginButton() {
           credentials: 'include',
         });
         if (res.ok) {
-          const data = await res.json();
           await setUserFromBackend();
         } else {
           console.error('Login failed', await res.text());
