@@ -79,12 +79,19 @@ The agent system is the core of this application. Each agent is an autonomous en
 git clone https://github.com/yourusername/claudewebsite.git
 cd claudewebsite
 
-# Create virtual environment
+# Create virtual environment (optional for isolation)
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+# Activate the venv:
+# On macOS / Linux: source venv/bin/activate
+# On Windows (PowerShell): venv\Scripts\Activate.ps1
+# On Windows (cmd): venv\Scripts\activate
 
-# Install dependencies
-pip install -r requirements.txt
+# NOTE: There are currently no required third-party Python packages
+# for the core agent examples; they use the Python standard library.
+# If you want developer tooling (formatters, linters, test runner),
+# install the optional development dependencies below:
+
+pip install -r requirements-dev.txt
 
 # Install frontend dependencies
 cd frontend

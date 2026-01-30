@@ -1,0 +1,130 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model - represents authenticated users via Google OAuth
+model User {
+  id                String    @id @default(uuid())
+  email             String    @unique
+  googleId          String    @unique
+  displayName       String
+  profilePictureUrl String?
+  timezone          String    @default("UTC")
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  deletedAt         DateTime?
+
+  // Relations
+  pets              Pet[]
+  petPhotos         PetPhoto[]
+  healthRecords     PetHealthRecord[]
+  auditLogs         AuditLog[]
+
+  @@index([email])
+  @@index([googleId])
+  @@map("users")
+}
+
+// Pet model - represents a pet owned by a user
+model Pet {
+  id                String    @id @default(uuid())
+  userId            String
+  name              String
+  species           String    // dog, cat, bird, rabbit, etc.
+  breed             String?
+  birthDate         DateTime?
+  weight            Decimal?  @db.Decimal(5, 2) // in kg
+  colorDescription  String?
+  microchipId       String?
+  notes             String?
+  profilePictureUrl String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  deletedAt         DateTime?
+  createdBy         String
+
+  // Relations
+  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  photos            PetPhoto[]
+  healthRecords     PetHealthRecord[]
+  auditLogs         AuditLog[]
+
+  @@index([userId])
+  @@index([deletedAt])
+  @@map("pets")
+}
+
+// PetPhoto model - represents photos of pets
+model PetPhoto {
+  id        String    @id @default(uuid())
+  petId     String
+  userId    String
+  photoUrl  String
+  photoKey  String    @unique // Storage identifier (filename)
+  isPrimary Boolean   @default(false)
+  uploadedAt DateTime @default(now())
+  uploadedBy String
+  deletedAt DateTime?
+
+  // Relations
+  pet       Pet       @relation(fields: [petId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@index([petId])
+  @@index([userId])
+  @@index([deletedAt])
+  @@map("pet_photos")
+}
+
+// PetHealthRecord model - tracks health information
+model PetHealthRecord {
+  id             String    @id @default(uuid())
+  petId          String
+  userId         String
+  recordType     String    // vaccination, medication, condition, checkup
+  title          String
+  description    String?
+  recordedDate   DateTime
+  expirationDate DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  deletedAt      DateTime?
+
+  // Relations
+  pet            Pet       @relation(fields: [petId], references: [id], onDelete: Cascade)
+  user           User      @relation(fields: [userId], references: [id])
+
+  @@index([petId])
+  @@index([userId])
+  @@index([recordType])
+  @@index([deletedAt])
+  @@map("pet_health_records")
+}
+
+// AuditLog model - tracks all user actions for compliance
+model AuditLog {
+  id        String    @id @default(uuid())
+  userId    String
+  entityType String   // User, Pet, PetPhoto, PetHealthRecord
+  entityId  String
+  action    String    // CREATE, UPDATE, DELETE, VIEW
+  changes   Json?     // JSONB field for before/after values
+  timestamp DateTime  @default(now())
+  ipAddress String?
+
+  // Relations
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([timestamp])
+  @@index([entityType])
+  @@map("audit_logs")
+}

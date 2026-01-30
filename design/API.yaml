@@ -1,0 +1,608 @@
+openapi: 3.0.0
+info:
+  title: Pet Management Platform API
+  description: RESTful API for managing pets and user data
+  version: 0.1.0
+  contact:
+    name: Development Team
+
+servers:
+  - url: http://localhost:3000
+    description: Local development
+  - url: https://api.example.com
+    description: Production
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        displayName:
+          type: string
+        profilePictureUrl:
+          type: string
+          nullable: true
+        timezone:
+          type: string
+          default: UTC
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required: [id, email, displayName, createdAt, updatedAt]
+
+    Pet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        species:
+          type: string
+          enum: [dog, cat, bird, rabbit, hamster, fish, other]
+        breed:
+          type: string
+          nullable: true
+        birthDate:
+          type: string
+          format: date
+          nullable: true
+        weight:
+          type: number
+          format: decimal
+          nullable: true
+          description: Weight in kilograms
+        colorDescription:
+          type: string
+          nullable: true
+        microchipId:
+          type: string
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+        profilePictureUrl:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required: [id, userId, name, species, createdAt, updatedAt]
+
+    PetPhoto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        petId:
+          type: string
+          format: uuid
+        photoUrl:
+          type: string
+        isPrimary:
+          type: boolean
+        uploadedAt:
+          type: string
+          format: date-time
+      required: [id, petId, photoUrl, isPrimary, uploadedAt]
+
+    HealthRecord:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        petId:
+          type: string
+          format: uuid
+        recordType:
+          type: string
+          enum: [vaccination, medication, condition, checkup]
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        recordedDate:
+          type: string
+          format: date
+        expirationDate:
+          type: string
+          format: date
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, petId, recordType, title, recordedDate, createdAt]
+
+    ApiResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: object
+          nullable: true
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            details:
+              type: object
+              nullable: true
+          nullable: true
+        meta:
+          type: object
+          properties:
+            timestamp:
+              type: string
+              format: date-time
+      required: [success, meta]
+
+paths:
+  /health:
+    get:
+      summary: Health check endpoint
+      tags: [System]
+      responses:
+        '200':
+          description: System is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ok]
+                  timestamp:
+                    type: string
+                    format: date-time
+
+  /auth/google:
+    post:
+      summary: Authenticate with Google OAuth
+      tags: [Authentication]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  description: Authorization code from Google
+              required: [code]
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          description: Authentication failed
+
+  /auth/logout:
+    post:
+      summary: Logout the current user
+      tags: [Authentication]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Logged out successfully
+
+  /auth/me:
+    get:
+      summary: Get current user information
+      tags: [Authentication]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          description: Not authenticated
+
+  /users/profile:
+    get:
+      summary: Get user profile
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          description: Not authenticated
+
+    patch:
+      summary: Update user profile
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                displayName:
+                  type: string
+                timezone:
+                  type: string
+      responses:
+        '200':
+          description: Profile updated
+        '400':
+          description: Invalid input
+
+  /pets:
+    get:
+      summary: List user's pets
+      tags: [Pets]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: species
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of pets
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          description: Not authenticated
+
+    post:
+      summary: Create a new pet
+      tags: [Pets]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                species:
+                  type: string
+                breed:
+                  type: string
+                birthDate:
+                  type: string
+                  format: date
+                weight:
+                  type: number
+                colorDescription:
+                  type: string
+                microchipId:
+                  type: string
+                notes:
+                  type: string
+              required: [name, species]
+      responses:
+        '201':
+          description: Pet created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Invalid input
+        '401':
+          description: Not authenticated
+
+  /pets/{petId}:
+    get:
+      summary: Get pet details
+      tags: [Pets]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Pet details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: Pet not found
+
+    patch:
+      summary: Update pet information
+      tags: [Pets]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                species:
+                  type: string
+                breed:
+                  type: string
+                birthDate:
+                  type: string
+                  format: date
+                weight:
+                  type: number
+                colorDescription:
+                  type: string
+                microchipId:
+                  type: string
+                notes:
+                  type: string
+      responses:
+        '200':
+          description: Pet updated
+        '404':
+          description: Pet not found
+
+    delete:
+      summary: Delete pet (soft delete)
+      tags: [Pets]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Pet deleted
+        '404':
+          description: Pet not found
+
+  /pets/{petId}/photos:
+    post:
+      summary: Upload pet photo
+      tags: [Pet Photos]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                isPrimary:
+                  type: boolean
+              required: [file]
+      responses:
+        '201':
+          description: Photo uploaded
+        '400':
+          description: Invalid file
+        '404':
+          description: Pet not found
+
+    get:
+      summary: Get pet photos
+      tags: [Pet Photos]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of photos
+        '404':
+          description: Pet not found
+
+  /pets/{petId}/health-records:
+    get:
+      summary: Get pet health records
+      tags: [Health Records]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of health records
+        '404':
+          description: Pet not found
+
+    post:
+      summary: Add health record
+      tags: [Health Records]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recordType:
+                  type: string
+                  enum: [vaccination, medication, condition, checkup]
+                title:
+                  type: string
+                description:
+                  type: string
+                recordedDate:
+                  type: string
+                  format: date
+                expirationDate:
+                  type: string
+                  format: date
+              required: [recordType, title, recordedDate]
+      responses:
+        '201':
+          description: Health record added
+        '404':
+          description: Pet not found
+
+  /pets/{petId}/health-records/{recordId}:
+    patch:
+      summary: Update health record
+      tags: [Health Records]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: recordId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                expirationDate:
+                  type: string
+                  format: date
+      responses:
+        '200':
+          description: Record updated
+        '404':
+          description: Record not found
+
+    delete:
+      summary: Delete health record
+      tags: [Health Records]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: recordId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Record deleted
+        '404':
+          description: Record not found
