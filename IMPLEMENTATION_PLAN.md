@@ -181,29 +181,29 @@ Next recommended steps:
 **Frontend Tasks**:
 
 1. **Google Login Flow** (3 hours)
-   - [ ] Install Google Auth library: `npm install @react-oauth/google`
-   - [ ] Create `src/components/LoginButton.tsx`:
-     - [ ] Display "Login with Google" button
-     - [ ] Handle authorization response
-     - [ ] Send auth code to backend
-   - [ ] Create landing page with login
-   - [ ] Styling with Tailwind
+    - [x] Install Google Auth library: `npm install @react-oauth/google`
+    - [x] Create `src/components/LoginButton.tsx`:
+       - [x] Display "Login with Google" button
+       - [x] Handle authorization response
+       - [x] Send auth code to backend
+    - [x] Create landing page with login
+    - [ ] Styling with Tailwind
 
 2. **Auth Context** (3 hours)
-   - [ ] Create `src/context/AuthContext.tsx`:
-     - [ ] User state
-     - [ ] isAuthenticated flag
-     - [ ] Login/logout functions
-   - [ ] Create `src/hooks/useAuth.ts`:
-     - [ ] Custom hook to access auth state
-   - [ ] Add Provider to App component
+    - [x] Create `src/context/AuthContext.tsx`:
+       - [x] User state
+       - [x] isAuthenticated flag
+       - [x] Login/logout functions
+    - [x] Create `src/hooks/useAuth.ts`:
+       - [x] Custom hook to access auth state
+    - [x] Add Provider to App component
 
 3. **Protected Routes** (2 hours)
-   - [ ] Create `src/components/ProtectedRoute.tsx`:
-     - [ ] Check authentication
-     - [ ] Redirect to login if not authenticated
-   - [ ] Wrap dashboard routes with ProtectedRoute
-   - [ ] Test redirection works
+    - [x] Create `src/components/ProtectedRoute.tsx`:
+       - [x] Check authentication
+       - [x] Redirect to login if not authenticated
+    - [x] Wrap dashboard routes with ProtectedRoute
+    - [ ] Test redirection works
 
 ### Days 4-5: Token Management & Session
 
