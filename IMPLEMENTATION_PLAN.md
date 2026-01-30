@@ -60,12 +60,12 @@ This document outlines the concrete, executable steps needed to implement the Pe
 **Tasks**:
 
 1. **Prisma Schema Validation** (3 hours)
-   - [ ] Review `prisma/schema.prisma`
-   - [ ] Verify all relationships are correct
-   - [ ] Check indexes are on right columns
-   - [ ] Run migrations: `npx prisma migrate dev`
-   - [ ] Open Prisma Studio to verify: `npm run db:studio`
-   - [ ] Test seed data is created correctly
+   - [x] Review `prisma/schema.prisma`
+   - [x] Verify all relationships are correct
+   - [x] Check indexes are on right columns
+   - [x] Run migrations: `npx prisma migrate dev`
+   - [x] Open Prisma Studio to verify: `npm run db:studio`
+   - [x] Test seed data is created correctly
 
 2. **JWT & Auth Utilities** (4 hours)
    - [ ] Create `src/utils/jwt.ts`:
