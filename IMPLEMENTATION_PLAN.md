@@ -68,16 +68,16 @@ This document outlines the concrete, executable steps needed to implement the Pe
    - [x] Test seed data is created correctly
 
 2. **JWT & Auth Utilities** (4 hours)
-   - [ ] Create `src/utils/jwt.ts`:
-     - [ ] `signToken(userId: string)` - Creates JWT
-     - [ ] `verifyToken(token: string)` - Validates JWT
-     - [ ] `refreshToken(token: string)` - Token refresh logic
-   - [ ] Create `src/utils/validation.ts`:
-     - [ ] User email validation
-     - [ ] Pet name validation
-     - [ ] Other common validators
-   - [ ] Write unit tests for JWT utilities
-   - [ ] Write unit tests for validators
+   - [x] Create `src/utils/jwt.ts`:
+     - [x] `signToken(userId: string)` - Creates JWT
+     - [x] `verifyToken(token: string)` - Validates JWT
+     - [x] `signRefreshToken(token: string)` - Token refresh logic
+   - [x] Create `src/utils/validation.ts`:
+     - [x] User email validation
+     - [x] Pet name validation
+     - [x] Other common validators
+   - [x] Write unit tests for JWT utilities
+   - [x] Write unit tests for validators
 
 3. **Authentication Middleware** (3 hours)
    - [ ] Create `src/middleware/auth.ts`:
