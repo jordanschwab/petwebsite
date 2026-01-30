@@ -14,13 +14,21 @@ export async function googleLogin(req: Request, res: Response) {
 
     const { user, accessToken, refreshToken } = await handleGoogleLogin(idToken);
 
-    // Set refresh token as httpOnly cookie
-    res.cookie('refreshToken', refreshToken, {
+    // Set refresh token as httpOnly cookie with hardened attributes for production
+    const cookieOptions: any = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    });
+    };
+
+    if (process.env.NODE_ENV === 'production') {
+      cookieOptions.secure = true; // send only over HTTPS
+      cookieOptions.sameSite = 'none'; // required for cross-site in many deployments
+      if (process.env.COOKIE_DOMAIN) cookieOptions.domain = process.env.COOKIE_DOMAIN;
+    } else {
+      cookieOptions.sameSite = 'lax';
+    }
+
+    res.cookie('refreshToken', refreshToken, cookieOptions);
 
     return res.json({ data: { user, accessToken }, message: 'Logged in successfully' });
   } catch (error) {

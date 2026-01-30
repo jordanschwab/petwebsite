@@ -65,6 +65,18 @@ export async function handleGoogleLogin(idToken: string): Promise<AuthResult> {
   const accessToken = signToken(user.id, user.email);
   const refreshToken = signRefreshToken(user.id);
 
+  // Persist refresh token
+  const expiryDate = new Date();
+  expiryDate.setDate(expiryDate.getDate() + 7); // 7 days
+
+  await (prisma as any).refreshToken.create({
+    data: {
+      token: refreshToken,
+      userId: user.id,
+      expiresAt: expiryDate,
+    },
+  });
+
   return { user, accessToken, refreshToken };
 }
 
@@ -77,16 +89,37 @@ export async function getUserById(userId: string) {
  * Returns new access token and rotated refresh token
  */
 export async function refreshAuthToken(refreshToken: string): Promise<AuthResult> {
-  // Verify and get payload from refresh token
-  const { accessToken: newAccessToken, payload } = await (await import('../utils/jwt.js')).refreshAccessToken(refreshToken);
+  // Verify refresh token payload using jwt utils
+  const { refreshAccessToken } = await import('../utils/jwt.js');
+  const { accessToken: newAccessToken, payload } = refreshAccessToken(refreshToken);
 
-  const user = await getUserById(payload.userId);
-  if (!user) {
-    throw new Error('User not found');
+  // Validate persisted refresh token exists and is not revoked/expired
+  const stored = await (prisma as any).refreshToken.findUnique({ where: { token: refreshToken } as any });
+  if (!stored || stored.revoked) {
+    throw new Error('Refresh token invalid or revoked');
   }
 
-  // Optionally rotate refresh token
+  if (stored.expiresAt < new Date()) {
+    throw new Error('Refresh token expired');
+  }
+
+  const user = await getUserById(payload.userId);
+  if (!user) throw new Error('User not found');
+
+  // Revoke old token and create a rotated one
+  await (prisma as any).refreshToken.update({ where: { id: stored.id }, data: { revoked: true } });
+
   const newRefreshToken = signRefreshToken(user.id);
+  const expiryDate = new Date();
+  expiryDate.setDate(expiryDate.getDate() + 7);
+
+  await (prisma as any).refreshToken.create({
+    data: {
+      token: newRefreshToken,
+      userId: user.id,
+      expiresAt: expiryDate,
+    },
+  });
 
   return { user, accessToken: newAccessToken, refreshToken: newRefreshToken };
 }
