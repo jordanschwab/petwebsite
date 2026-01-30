@@ -18,12 +18,14 @@ This document outlines the concrete, executable steps needed to implement the Pe
 | **Backend Tests** | ✅ 129/129 Passing | All auth, middleware, and utility tests passing locally |
 | **Frontend Auth UI** | ✅ Complete | Google login, auth context, protected routes, dashboard with user display |
 | **Frontend Type-Check** | ✅ 0 Errors | TypeScript strict mode passing |
-| **E2E Tests** | ⏳ Pending | Login/logout/refresh E2E tests not yet implemented |
+| **Frontend Jest Setup** | ✅ Complete | Jest + testing libraries installed, config ready for unit/integration tests |
+| **Manual E2E Testing** | ⏳ Pending | Login/logout/refresh flows with real Google credentials in browser |
+| **Week 3: Pet CRUD** | ⏳ Next | Backend endpoints and frontend forms for pet management |
 
-**Immediate Next Steps**:
-1. Add E2E tests for auth flows (login, logout, token refresh, redirects)
-2. Manual testing of frontend login with real Google client credentials
-3. Begin Week 3: Pet Management CRUD implementation
+**Next Steps** (Priority Order):
+1. **Manual E2E Testing** - Start backend dev server, open frontend in browser, test real Google login flow
+2. **Week 3 Backend** - Create pet endpoints (POST /pets, GET /pets, PATCH /pets/:id, DELETE /pets/:id)
+3. **Week 3 Frontend** - Build pet form and list UI components
 
 ---
 
