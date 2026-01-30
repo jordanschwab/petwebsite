@@ -18,14 +18,12 @@ This document outlines the concrete, executable steps needed to implement the Pe
 | **Backend Tests** | ✅ 129/129 Passing | All auth, middleware, and utility tests passing locally |
 | **Frontend Auth UI** | ✅ Complete | Google login, auth context, protected routes, dashboard with user display |
 | **Frontend Type-Check** | ✅ 0 Errors | TypeScript strict mode passing |
-| **CI/CD** | ⏳ Pending | Awaiting push to remote for full stack validation |
 | **E2E Tests** | ⏳ Pending | Login/logout/refresh E2E tests not yet implemented |
 
 **Immediate Next Steps**:
-1. Push commits to remote and run CI
-2. Add E2E tests for auth flows (login, logout, token refresh, redirects)
-3. Manual testing of frontend login with real Google client credentials
-4. Begin Week 3: Pet Management CRUD implementation
+1. Add E2E tests for auth flows (login, logout, token refresh, redirects)
+2. Manual testing of frontend login with real Google client credentials
+3. Begin Week 3: Pet Management CRUD implementation
 
 ---
 
@@ -75,7 +73,6 @@ This document outlines the concrete, executable steps needed to implement the Pe
 - ✅ Frontend: Axios client with automatic token refresh on 401
 - ✅ Frontend: User can see display name and sign out
 - ⏳ **Pending**: E2E tests for login/logout/refresh flows
-- ⏳ **Pending**: Push to remote and run CI validation
 
 ---
 

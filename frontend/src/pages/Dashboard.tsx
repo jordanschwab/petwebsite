@@ -1,4 +1,8 @@
+import { useAuth } from '@/hooks/useAuth';
+
 export default function Dashboard() {
+  const { user, signOut } = useAuth();
+
   return (
     <div className="p-8 container">
       <div className="flex justify-between items-center mb-6">
