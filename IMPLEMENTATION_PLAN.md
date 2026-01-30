@@ -93,11 +93,11 @@ This document outlines the concrete, executable steps needed to implement the Pe
    - [x] Write integration tests (28 middleware tests)
 
 4. **Google OAuth Configuration** (2 hours)
-   - [ ] Create `src/auth/google.ts`:
-     - [ ] OAuth client initialization
-     - [ ] ID token verification function
-     - [ ] User profile extraction
-   - [ ] Write tests for OAuth verification
+   - [x] Create `src/auth/google.ts`:
+     - [x] OAuth client initialization
+     - [x] ID token verification function
+     - [x] User profile extraction
+   - [x] Write tests for OAuth verification
 
 **Testing Checklist**:
 - [ ] All new functions have unit tests
