@@ -80,15 +80,17 @@ This document outlines the concrete, executable steps needed to implement the Pe
    - [x] Write unit tests for validators
 
 3. **Authentication Middleware** (3 hours)
-   - [ ] Create `src/middleware/auth.ts`:
-     - [ ] `authenticateToken()` - Verify JWT middleware
-     - [ ] `requireAuth()` - Express middleware for protected routes
-   - [ ] Create `src/middleware/errorHandler.ts`:
-     - [ ] Global error handler
-     - [ ] Error response formatting
-     - [ ] Logging errors
-   - [ ] Apply middleware to Express app
-   - [ ] Write integration tests
+   - [x] Create `src/middleware/auth.ts`:
+     - [x] `authenticateToken()` - Verify JWT middleware
+     - [x] `requireAuth()` - Express middleware for protected routes
+     - [x] `requireResourceOwnership()` - Verify user owns resource
+   - [x] Create `src/middleware/errorHandler.ts`:
+     - [x] Global error handler with AppError class
+     - [x] Error response formatting
+     - [x] Logging errors with context
+     - [x] 404 Not Found handler
+   - [x] Apply middleware to Express app
+   - [x] Write integration tests (28 middleware tests)
 
 4. **Google OAuth Configuration** (2 hours)
    - [ ] Create `src/auth/google.ts`:
