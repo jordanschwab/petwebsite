@@ -20,12 +20,13 @@ This document outlines the concrete, executable steps needed to implement the Pe
 | **Frontend Type-Check** | ✅ 0 Errors | TypeScript strict mode passing |
 | **Frontend Jest Setup** | ✅ Complete | Jest + testing libraries installed, config ready for unit/integration tests |
 | **Manual E2E Testing** | ⏳ Pending | Login/logout/refresh flows with real Google credentials in browser |
-| **Week 3: Pet CRUD** | ⏳ Next | Backend endpoints and frontend forms for pet management |
+| **Week 3: Pet CRUD Backend** | ✅ Complete | All CRUD endpoints implemented with 30 tests, 159/159 tests passing |
+| **Week 3: Pet CRUD Frontend** | ⏳ Next | Pet form and list UI components |
 
 **Next Steps** (Priority Order):
-1. **Manual E2E Testing** - Start backend dev server, open frontend in browser, test real Google login flow
-2. **Week 3 Backend** - Create pet endpoints (POST /pets, GET /pets, PATCH /pets/:id, DELETE /pets/:id)
-3. **Week 3 Frontend** - Build pet form and list UI components
+1. **Week 3 Frontend** - Build pet form component and pet list UI
+2. **Manual E2E Testing** - Test Google login flow and pet CRUD operations in browser
+3. **Week 4 Testing & Polish** - Comprehensive testing, error handling, and deployment prep
 
 ---
 
@@ -50,7 +51,7 @@ This document outlines the concrete, executable steps needed to implement the Pe
 
 ---
 
-## Week 2: Authentication Implementation ✅ BACKEND COMPLETE | 🔄 FRONTEND IN PROGRESS
+## Week 2: Authentication Implementation ✅ COMPLETE
 
 ### Task Completion Summary
 
@@ -74,11 +75,27 @@ This document outlines the concrete, executable steps needed to implement the Pe
 - ✅ Frontend: Auth context and protected routes implemented
 - ✅ Frontend: Axios client with automatic token refresh on 401
 - ✅ Frontend: User can see display name and sign out
-- ⏳ **Pending**: E2E tests for login/logout/refresh flows
+
+**Week 2 Status**: ✅ COMPLETE - Ready for Week 3
 
 ---
 
-## Week 3: Pet Management - Core CRUD ⏳ NOT STARTED
+## Week 3: Pet Management - Core CRUD 🔄 IN PROGRESS
+
+### Task Completion Summary
+
+| Task | Subtask | Status | Commit ID | Details |
+|------|---------|--------|-----------|------|
+| **Pet Service Layer** | CRUD operations (create, list, get, update, delete, search) | ✅ Complete | [`226cb99`](https://github.com/jordaniza/claudewebsite/commit/226cb99) | `petService.ts` with soft-delete support |
+| **Pet Controllers** | HTTP handlers with validation and auth checks | ✅ Complete | [`226cb99`](https://github.com/jordaniza/claudewebsite/commit/226cb99) | `petController.ts` with proper error handling |
+| **Pet Routes** | Protected routes for all CRUD endpoints | ✅ Complete | [`226cb99`](https://github.com/jordaniza/claudewebsite/commit/226cb99) | `pets.ts` with requireAuth middleware |
+| **Pet Validation** | validatePet function for input validation | ✅ Complete | [`226cb99`](https://github.com/jordaniza/claudewebsite/commit/226cb99) | Added to `validation.ts` |
+| **Pet Tests** | Comprehensive test suite (30 tests) | ✅ Complete | [`226cb99`](https://github.com/jordaniza/claudewebsite/commit/226cb99) | `pet.test.ts` - all CRUD operations tested |
+| **Frontend: Pet Form** | Create/edit pet form component | ⏳ Pending | - | Next priority |
+| **Frontend: Pet List** | Display and manage pets UI | ⏳ Pending | - | Next priority |
+| **Frontend: Pet Detail** | View and edit pet details page | ⏳ Pending | - | Next priority |
+
+**Week 3 Backend Status**: ✅ COMPLETE - 159/159 tests passing
 
 ### Task Overview
 
