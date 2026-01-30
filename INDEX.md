@@ -89,16 +89,6 @@ Complete guide to all documentation in the repository.
 
 ---
 
-### 7️⃣ Agent Framework (Future)
-
-| Document | Purpose | Audience | Read Time |
-|----------|---------|----------|-----------|
-| [agents/ARCHITECTURE.md](agents/ARCHITECTURE.md) | Agent system design | Architects | 15 min |
-| [agents/INSTRUCTIONS.md](agents/INSTRUCTIONS.md) | Agent behavioral guidelines | Developers | 20 min |
-
-**Use for**: Understanding future phases, agent design patterns
-
----
 
 ## 🎯 Documentation by Role
 
@@ -160,7 +150,6 @@ npm run lint:fix   # Fix linting
 **Focus Areas**:
 - [design/README.md#-architecture-overview](design/README.md#-architecture-overview)
 - [design/TECHNICAL.md#-architecture-overview](design/TECHNICAL.md#-architecture-overview)
-- [agents/ARCHITECTURE.md](agents/ARCHITECTURE.md) - Future architecture
 
 ---
 
@@ -274,10 +263,6 @@ DEVELOPMENT GUIDES:
 ├── frontend/README.md         ← Frontend setup
 ├── backend/prisma/schema.prisma ← Database
 └── backend/package.json       ← Backend dependencies
-
-AGENTS (FUTURE):
-├── agents/ARCHITECTURE.md     ← Agent system
-└── agents/INSTRUCTIONS.md     ← Agent guidelines
 ```
 
 ---

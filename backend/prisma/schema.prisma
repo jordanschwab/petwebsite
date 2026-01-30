@@ -55,7 +55,6 @@ model Pet {
   user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   photos            PetPhoto[]
   healthRecords     PetHealthRecord[]
-  auditLogs         AuditLog[]
 
   @@index([userId])
   @@index([deletedAt])

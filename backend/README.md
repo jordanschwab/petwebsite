@@ -19,13 +19,18 @@ docker-compose up -d
 # 2. Install dependencies
 npm install
 
-# 3. Setup database
+# 3. Setup environment
+cp .env.example .env.local
+# Then copy to .env (Prisma requires .env not .env.local)
+cp .env.local .env
+
+# 4. Setup database
 npx prisma migrate dev
 
-# 4. Seed sample data
+# 5. Seed sample data
 npx prisma db seed
 
-# 5. Start development server
+# 6. Start development server
 npm run dev
 ```
 

@@ -1,12 +1,11 @@
 # Claude Website - Full Stack Application
 
-A comprehensive full-stack website built with an autonomous agent-driven architecture, featuring distributed task processing, intelligent orchestration, and scalable services.
+A comprehensive full-stack website built with a modern architecture, featuring scalable services, microservices patterns, and real-time capabilities.
 
 ## 📋 Project Overview
 
-This project implements a modern full-stack web application with:
+This project implements a full-stack web application with:
 
-- **Agent-Driven Architecture**: Autonomous agents for task processing, orchestration, and analysis
 - **Microservices Backend**: Modular service-oriented architecture
 - **Modern Frontend**: Responsive user interface with real-time updates
 - **Scalable Infrastructure**: Designed for horizontal scaling and high availability
@@ -15,53 +14,17 @@ This project implements a modern full-stack web application with:
 
 ```
 claudewebsite/
-├── agents/                  # Agent system and autonomous task processing
-│   ├── ARCHITECTURE.md      # Agent architecture documentation
-│   ├── INSTRUCTIONS.md      # Agent behavior guidelines and standards
-│   ├── base_agent.py        # Base agent class implementation
-│   └── __init__.py          # Module initialization
-├── services/                # Backend microservices
-│   └── [Coming Soon]
+├── backend/                 # Backend services
+│   ├── src/                 # Source code
+│   └── prisma/              # Database schema
 ├── frontend/                # Frontend application
-│   └── [Coming Soon]
+│   └── src/                 # React components and pages
 ├── config/                  # Configuration files
-│   └── [Coming Soon]
 ├── docs/                    # Documentation
-│   └── [Coming Soon]
+├── services/                # Backend microservices
 ├── tests/                   # Test suite
-│   └── [Coming Soon]
 └── README.md               # This file
 ```
-
-## 🤖 Agent System
-
-The agent system is the core of this application. Each agent is an autonomous entity that:
-
-- Processes tasks asynchronously
-- Maintains its own state
-- Communicates with other agents
-- Handles errors gracefully
-- Reports progress and status
-
-### Key Components
-
-1. **Base Agent** (`agents/base_agent.py`)
-   - Foundational class for all agents
-   - Task queue management
-   - State persistence
-   - Event handling
-
-2. **Agent Architecture** (`agents/ARCHITECTURE.md`)
-   - System design overview
-   - Component descriptions
-   - Communication protocols
-   - Scaling strategies
-
-3. **Agent Instructions** (`agents/INSTRUCTIONS.md`)
-   - Behavioral standards
-   - Task execution guidelines
-   - Error handling protocols
-   - Security requirements
 
 ## 🚀 Quick Start
 
@@ -103,40 +66,21 @@ cd ..
 
 ```bash
 # Start backend services
-python -m services.main
+cd backend
+npm run dev
 
-# Start agents (in another terminal)
-python -m agents.base_agent
-
-# Start frontend development server
+# Start frontend development server (in another terminal)
 cd frontend
-npm start
+npm run dev
 ```
 
 ## 📚 Documentation
 
-- [Agent Architecture](agents/ARCHITECTURE.md) - Detailed agent system design
-- [Agent Instructions](agents/INSTRUCTIONS.md) - Behavioral standards and guidelines
-- [API Documentation](docs/API.md) - REST API reference
-- [Development Guide](docs/DEVELOPMENT.md) - Setup and contribution guidelines
+- [API Documentation](design/API.yaml) - REST API reference
+- [Development Guide](DEVELOPMENT.md) - Setup and contribution guidelines
+- [Technical Documentation](design/TECHNICAL.md) - Architecture and design patterns
 
 ## 🔧 Development
-
-### Creating a New Agent
-
-1. Extend the `BaseAgent` class
-2. Implement custom `process_task()` logic
-3. Add configuration in `AgentConfig`
-4. Register in agent manager
-
-```python
-from agents import BaseAgent, AgentConfig
-
-class CustomAgent(BaseAgent):
-    def process_task(self, task):
-        # Your custom logic here
-        pass
-```
 
 ### Running Tests
 
@@ -153,22 +97,22 @@ pytest tests/test_agents.py
 
 ### Code Style
 
-This project follows PEP 8 and includes:
+This project follows best practices for both frontend and backend:
 
-- Type hints for all functions
-- Docstrings for all classes and modules
+- **Backend**: TypeScript with strict type checking
+- **Frontend**: React with TypeScript and ESLint
 - Pre-commit hooks for linting
-- Automated formatting with Black
+- Automated formatting
 
 ```bash
-# Format code
-black .
+# Backend linting
+cd backend && npm run lint
 
-# Lint code
-pylint **/*.py
+# Frontend linting
+cd frontend && npm run lint
 
-# Type checking
-mypy .
+# Type checking (both)
+npm run type-check
 ```
 
 ## 🔒 Security

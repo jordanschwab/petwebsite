@@ -83,12 +83,6 @@ claudewebsite/
 │   │
 │   └── 📁 public/                    # Static assets
 │
-├── 📁 agents/                        # 🤖 Agent Framework (Future Phases)
-│   ├── 📄 base_agent.py              # ✅ Base agent class
-│   ├── 📄 __init__.py                # ✅ Module init
-│   ├── 📄 ARCHITECTURE.md            # ✅ Agent architecture
-│   └── 📄 INSTRUCTIONS.md            # ✅ Agent guidelines
-│
 ├── 📁 services/                      # Microservices (Scaffolding)
 ├── 📁 config/                        # Configuration (Scaffolding)
 ├── 📁 docs/                          # Documentation (Scaffolding)
@@ -145,7 +139,6 @@ claudewebsite/
 │   ├── public/
 │   └── [configs & package.json]
 │
-├── agents/                     # Agent Framework (Python)
 ├── design/                     # Specifications
 ├── docs/                       # Documentation (Scaffolding)
 ├── config/                     # Config (Scaffolding)
