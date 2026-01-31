@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Landing from '@/pages/Landing';
 import Dashboard from '@/pages/Dashboard';
+import CreatePet from '@/pages/CreatePet';
+import PetDetail from '@/pages/PetDetail';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { AuthProvider } from '@/context/AuthContext';
 
@@ -20,6 +22,22 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/pets/new"
+              element={
+                <ProtectedRoute>
+                  <CreatePet />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/pets/:id"
+              element={
+                <ProtectedRoute>
+                  <PetDetail />
                 </ProtectedRoute>
               }
             />

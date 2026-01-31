@@ -16,7 +16,6 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
-let isRefreshing = false;
 let refreshPromise: Promise<any> | null = null;
 
 async function refreshToken() {
@@ -52,5 +51,56 @@ apiClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// Pet API functions
+export const petApi = {
+  // List all pets for the authenticated user
+  listPets: async (params?: { search?: string; species?: string; page?: number; limit?: number }) => {
+    const response = await apiClient.get('/api/pets', { params });
+    return response.data?.data ?? response.data;
+  },
+
+  // Get a single pet by ID
+  getPet: async (id: string) => {
+    const response = await apiClient.get(`/api/pets/${id}`);
+    return response.data?.data ?? response.data;
+  },
+
+  // Create a new pet
+  createPet: async (petData: {
+    name: string;
+    species: string;
+    breed?: string;
+    birthDate?: string;
+    weight?: number;
+    colorDescription?: string;
+    microchipId?: string;
+    notes?: string;
+  }) => {
+    const response = await apiClient.post('/api/pets', petData);
+    return response.data?.data ?? response.data;
+  },
+
+  // Update an existing pet
+  updatePet: async (id: string, petData: Partial<{
+    name: string;
+    species: string;
+    breed?: string;
+    birthDate?: string;
+    weight?: number;
+    colorDescription?: string;
+    microchipId?: string;
+    notes?: string;
+  }>) => {
+    const response = await apiClient.patch(`/api/pets/${id}`, petData);
+    return response.data?.data ?? response.data;
+  },
+
+  // Delete a pet (soft delete)
+  deletePet: async (id: string) => {
+    const response = await apiClient.delete(`/api/pets/${id}`);
+    return response.data?.data ?? response.data;
+  },
+};
 
 export default apiClient;
