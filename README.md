@@ -1,5 +1,10 @@
 # Pet Management Platform
 
+## MANUAL DEVELOPER NOTE
+
+Everything outside this specific paragraph is generated through vibe coding and should not be trusted. This is an experement with a different sytle of coding and so the full commit history is preserved to help with lessions learnt along the way.
+
+
 **Version**: 0.1.0 (MVP)  
 **Status**: ✅ Production-Ready  
 **Release Date**: January 31, 2026
