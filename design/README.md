@@ -1,53 +1,58 @@
-# Pet Management Platform - Design Document
+# Design & Specification
 
-## 📋 Executive Summary
+Product specifications and technical decisions (reference documents for design review).
 
-The Pet Management Platform is a web application that enables users to manage a personal database of pets. Users authenticate via Google OAuth, then can create, view, edit, and manage detailed pet profiles. The platform supports multiple pets per user with rich metadata and ownership tracking.
+## 📋 Overview
 
-**Key Objective**: Provide a simple, intuitive interface for users to maintain comprehensive pet information.
+This folder contains the design specifications and requirements for the Pet Management Platform. These are **reference documents**, not runnable code.
+
+For runnable setup and procedures, see [../docs/](../docs/) folder.
+
+## 📄 Documents
+
+### [API.yaml](API.yaml)
+**Purpose**: Complete REST API specification  
+**Audience**: Backend developers, API consumers  
+**Content**: All endpoints, request/response schemas, error codes, authentication
+
+### [PHASE1_ACCEPTANCE_CRITERIA.md](PHASE1_ACCEPTANCE_CRITERIA.md)
+**Purpose**: MVP acceptance criteria and success metrics  
+**Audience**: QA, product managers, developers  
+**Content**: Feature requirements, user stories, acceptance tests
+
+### [TECHNICAL.md](../docs/ARCHITECTURE.md)
+**Purpose**: Technical architecture and technology decisions  
+**Audience**: Architects, senior developers  
+**Content**: Why each tech was chosen, trade-offs, alternatives
+
+## 🎯 MVP Scope (Phase 1 - Complete ✅)
+
+## 🎯 MVP Scope (Phase 1 - Complete ✅)
+
+**Completed Features:**
+- ✅ Google OAuth authentication
+- ✅ Pet CRUD operations (create, read, update, delete)
+- ✅ Search and filtering
+- ✅ Responsive UI
+- ✅ 159+ tests, 0 errors
+
+## 📈 Phase 2 Roadmap (Future)
+
+- Pet photos and gallery
+- Health records (vaccinations, medications)
+- Appointment scheduling
+- Family pet sharing
+
+## 🔗 See Also
+
+- **[../README.md](../README.md)** - Quick start
+- **[../docs/](../docs/)** - Setup, testing, deployment, contributing
+- **[../docs/ARCHITECTURE.md](../docs/ARCHITECTURE.md)** - Technical architecture details
 
 ---
 
-## 🎯 Application Overview
-
-### Purpose
-- Allow users to securely authenticate via Google
-- Maintain a personal pet registry with detailed information
-- Track pet ownership and relationships
-- Support collaborative pet management for families/groups
-
-### Target Users
-- Pet owners (individual consumers)
-- Families managing multiple pets
-- Pet care businesses
-- Veterinary clinics for client records
-
-### Success Metrics
-- User registration completion rate > 80%
-- Average session duration > 10 minutes
-- Pet creation within first session
-- Feature adoption rate > 60% for edit functionality
-
----
-
-## ✨ Core Features
-
-### 1. Authentication & User Management
-- **Google OAuth Integration**
-  - One-click login with Google credentials
-  - Automatic user profile creation
-  - Email verification via Google
-  - Secure token management
-  
-- **User Profile**
-  - Email address (from Google)
-  - Display name (editable)
-  - Profile picture (from Google)
-  - Account creation date
-  - Timezone preference
-
-### 2. Pet Management
-- **Create Pet**
+**Status**: Phase 1 MVP Complete  
+**Last Updated**: January 31, 2026
   - Pet name (required)
   - Species (dog, cat, bird, etc.)
   - Breed
