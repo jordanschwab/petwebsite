@@ -1,8 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import type { AxiosError } from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Pet } from '@/types';
 import { petApi } from '@/services/api';
 import PetForm, { PetFormData } from '@/components/PetForm';
+
+type ApiErrorResponse = { error?: { message?: string } };
+const getErrorMessage = (err: unknown, fallback: string) => {
+  const axiosError = err as AxiosError<ApiErrorResponse>;
+  return axiosError?.response?.data?.error?.message || fallback;
+};
 
 export default function PetDetail() {
   const { id } = useParams<{ id: string }>();
@@ -16,34 +23,36 @@ export default function PetDetail() {
   const [error, setError] = useState<string | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
+  const fetchPet = useCallback(async () => {
+    if (!id) return;
+    try {
+      setIsLoading(true);
+      setError(null);
+      const response = await petApi.getPet(id);
+      setPet(response.pet);
+    } catch (err) {
+      setError(getErrorMessage(err, 'Failed to load pet'));
+    } finally {
+      setIsLoading(false);
+    }
+  }, [id]);
+
   useEffect(() => {
     if (id) {
       fetchPet();
     }
-  }, [id]);
-
-  const fetchPet = async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      const response = await petApi.getPet(id!);
-      setPet(response.pet);
-    } catch (err: any) {
-      setError(err.response?.data?.error?.message || 'Failed to load pet');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [id, fetchPet]);
 
   const handleUpdate = async (petData: PetFormData) => {
     try {
       setIsSaving(true);
       setError(null);
-      const response = await petApi.updatePet(id!, petData);
+      if (!id) return;
+      const response = await petApi.updatePet(id, petData);
       setPet(response.pet);
       setIsEditing(false);
-    } catch (err: any) {
-      setError(err.response?.data?.error?.message || 'Failed to update pet');
+    } catch (err) {
+      setError(getErrorMessage(err, 'Failed to update pet'));
     } finally {
       setIsSaving(false);
     }
@@ -53,10 +62,11 @@ export default function PetDetail() {
     try {
       setIsDeleting(true);
       setError(null);
-      await petApi.deletePet(id!);
+      if (!id) return;
+      await petApi.deletePet(id);
       navigate('/dashboard');
-    } catch (err: any) {
-      setError(err.response?.data?.error?.message || 'Failed to delete pet');
+    } catch (err) {
+      setError(getErrorMessage(err, 'Failed to delete pet'));
       setShowDeleteConfirm(false);
     } finally {
       setIsDeleting(false);

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import type { AxiosError } from 'axios';
 import PetForm, { PetFormData } from '@/components/PetForm';
 import { petApi } from '@/services/api';
 
@@ -8,6 +9,12 @@ export default function CreatePet() {
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  type ApiErrorResponse = { error?: { message?: string } };
+  const getErrorMessage = (err: unknown, fallback: string) => {
+    const axiosError = err as AxiosError<ApiErrorResponse>;
+    return axiosError?.response?.data?.error?.message || fallback;
+  };
+
   const handleSubmit = async (petData: PetFormData) => {
     try {
       setIsSaving(true);
@@ -15,8 +22,8 @@ export default function CreatePet() {
       const response = await petApi.createPet(petData);
       // Navigate to the newly created pet's detail page
       navigate(`/pets/${response.pet.id}`);
-    } catch (err: any) {
-      setError(err.response?.data?.error?.message || 'Failed to create pet');
+    } catch (err) {
+      setError(getErrorMessage(err, 'Failed to create pet'));
       setIsSaving(false);
     }
   };

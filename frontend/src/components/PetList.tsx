@@ -1,6 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import type { AxiosError } from 'axios';
 import { Pet } from '@/types';
 import { petApi } from '@/services/api';
+
+type PetListParams = { search?: string; species?: string; page?: number; limit?: number };
+type ApiErrorResponse = { error?: { message?: string } };
+const getErrorMessage = (err: unknown, fallback: string) => {
+  const axiosError = err as AxiosError<ApiErrorResponse>;
+  return axiosError?.response?.data?.error?.message || fallback;
+};
 
 interface PetListProps {
   onPetClick?: (pet: Pet) => void;
@@ -18,15 +26,11 @@ export default function PetList({ onPetClick, onCreatePet }: PetListProps) {
 
   const SPECIES_OPTIONS = ['dog', 'cat', 'bird', 'rabbit', 'hamster', 'fish', 'other'];
 
-  useEffect(() => {
-    fetchPets();
-  }, [searchQuery, speciesFilter, currentPage]);
-
-  const fetchPets = async () => {
+  const fetchPets = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
-      const params: any = { page: currentPage, limit: 20 };
+      const params: PetListParams = { page: currentPage, limit: 20 };
       if (searchQuery) params.search = searchQuery;
       if (speciesFilter) params.species = speciesFilter;
 
@@ -37,12 +41,16 @@ export default function PetList({ onPetClick, onCreatePet }: PetListProps) {
       if (response.total) {
         setTotalPages(Math.ceil(response.total / 20));
       }
-    } catch (err: any) {
-      setError(err.response?.data?.error?.message || 'Failed to load pets');
+    } catch (err) {
+      setError(getErrorMessage(err, 'Failed to load pets'));
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [currentPage, searchQuery, speciesFilter]);
+
+  useEffect(() => {
+    fetchPets();
+  }, [fetchPets]);
 
   const calculateAge = (birthDate?: string): string => {
     if (!birthDate) return 'Unknown';

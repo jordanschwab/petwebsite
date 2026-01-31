@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
-const API_URL = (import.meta as any)?.env?.VITE_API_URL || 'http://localhost:3000';
+const API_URL = import.meta.env?.VITE_API_URL ?? 'http://localhost:3000';
 
 const apiClient = axios.create({
   baseURL: API_URL,
@@ -16,11 +16,12 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
-let refreshPromise: Promise<any> | null = null;
+type RefreshResponse = { data?: { accessToken?: string } };
+let refreshPromise: Promise<RefreshResponse> | null = null;
 
 async function refreshToken() {
   if (!refreshPromise) {
-    refreshPromise = apiClient.post('/api/auth/refresh').then((r) => {
+    refreshPromise = apiClient.post<RefreshResponse>('/api/auth/refresh').then((r) => {
       if (r.data?.data?.accessToken) {
         localStorage.setItem('accessToken', r.data.data.accessToken);
       }
