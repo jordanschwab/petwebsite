@@ -55,3 +55,6 @@ public/uploads/
 
 # Prisma
 prisma/migrations/
+
+# Agent output
+agent-output/
