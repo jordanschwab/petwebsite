@@ -18,6 +18,12 @@ export default {
       tsconfig: {
         jsx: 'react-jsx',
       },
+      useESM: true,
     }],
+  },
+  extensionsToTreatAsEsm: ['.ts', '.tsx'],
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '^@/../design/(.*)$': '<rootDir>/design/$1',
   },
 };
